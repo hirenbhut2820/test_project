@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+</head>
+<body>
+    <div class="signup-area">
+        <div class="container">
+            <div class="signup-container">
+                <div class="row justify-content-center text-center">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <form id="signup-form" enctype="application/x-www-form-urlencoded">
+                                <div class="form-title">
+                                    <h1>Signup</h1>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="name" id="name" placeholder="Enter Your Username" required/>
+                                </div>
+                                <div class="form-group">
+                                    <div class="email-error error-validation">Email Already Exists</div>
+                                    <input class="form-control" type="email" name="email" id="email" placeholder="Enter Your Email" required/>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="city" id="city" placeholder="Enter Your City" required/>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="state" id="state" placeholder="Enter Your State" required/>
+                                </div>
+                                <div class="form-group">
+                                    <div class="password-error error-validation">Password Must be 6 to 12 character</div>
+                                    <input class="form-control" type="password" name="password1" id="password1" placeholder="Enter Your Password" required/>
+                                </div>
+                                <div class="form-group">
+                                    <div class="password-dont-match error-validation">Password Not Match</div>
+                                    <input class="form-control" type="password" name="password2" id="password2" placeholder="Confirm Password" required/>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Signup</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#password1').on('change',function(e){
+            if($(this)[0].value.length  < 6 || $(this)[0].value.length  > 12){
+                $('.password-error').show();
+                setTimeout(()=>{
+                    $('.password-error').hide();
+                },2000)
+            }
+        })
+        $('#password2').on('change',function(e){
+            if($(this)[0].value.length  < 6 || $(this)[0].value.length  > 12){
+                $('.password-error').show();
+                setTimeout(()=>{
+                    $('.password-error').hide();
+                },2000)
+            }
+        })
+        $('#signup-form').on('submit',function(e){
+            e.preventDefault();
+            if($(this)[0].password1.value != $(this)[0].password2.value){
+                $('.password-dont-match').show();
+                setTimeout(()=>{
+                    $('.password-dont-match').hide();
+                },2000)
+                return;
+            }
+            let userSignObj = {
+                name:$(this)[0].name.value,
+                email:$(this)[0].email.value,
+                city:$(this)[0].city.value,
+                state:$(this)[0].state.value,
+                password:$(this)[0].password1.value
+            }
+            var formBody = [];
+            for (var property in userSignObj) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(userSignObj[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+            }
+            formBody = formBody.join("&");
+            fetch('/signupAPI',{
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body:formBody
+            })
+            .then((response)=>{
+                response.json().then((data)=>{
+                    if(data.status = 'user_found'){
+                        $('.email-error').show();
+                        setTimeout(()=>{
+                            $('.email-error').hide();
+                        },2000)
+                    }
+                })
+            }).catch((e)=>{
+                console.log(e)
+            })
+        })
+    </script>
+</body>
+</html>

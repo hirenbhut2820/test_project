@@ -1,0 +1,29 @@
+.home-page-container{
+    height: 100px;
+    background-color: rgb(88, 88, 146);
+    color: #fff;
+    width: 100%;
+    padding: 20px 0px;
+}
+
+.logout-section {
+    text-align: right;
+}
+.error-validation{color:red;font-size: 16px;text-align: left;display: none;}
+.user-validate{color: green;font-size: 16px;text-align: left;display: none;}
+.signup-area{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+.signup-area form{
+    margin: 30px;
+}
+.signup-area form .form-title{
+    margin-bottom: 20px;
+}
+.signup-area form .form-group{
+    margin: 10px 0px;
+}
+.logout-section a{color:#fff;text-decoration: none;}
