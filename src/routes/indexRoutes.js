@@ -16,7 +16,6 @@ const authValidate = (req,res,next)=>{
     if(req.session.username){
         next()
     }else{
-        next()
         res.redirect('/login')
     }
 }
